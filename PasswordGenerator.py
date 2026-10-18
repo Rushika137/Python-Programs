@@ -1,6 +1,12 @@
 import random
 import string
-n=int(input("enter the length of password:"))
+while True:
+ n=int(input("enter the length of password:"))
+ if n<0 or n>21:
+   print("please enter password size between 1 to 20")
+ else:
+   break
+
 c=[str(random.randint(0,9)),random.choice(string.ascii_lowercase),random.choice(string.ascii_uppercase),random.choice(string.punctuation)]
 h=[]
 if n<4:

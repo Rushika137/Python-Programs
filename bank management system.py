@@ -36,11 +36,16 @@ def management():
         details=load()
         print("========== CREATE ACCOUNT ==========")
         while True:
-           account_number=input("enter account number:")
-           if len(account_number)==4 and account_number.isdigit():
-              break
+           account_number = input("Enter account number: ")
+           if len(account_number) == 4 and account_number.isdigit():
+             for i in details:
+                  if i["Account Number"] == account_number:
+                     print("Account Number already exists")
+                     break
+             else:
+                break
            else:
-              print("please enter only 4 numbers")
+              print("Please enter only 4 numbers")
         name =str(input("Enter the name: "))
         while True:
            number = input("Enter the mobile number: ")
@@ -57,7 +62,10 @@ def management():
         while True:
           try:
              balance=int(input("enter balance:"))
-             break
+             if balance>0:
+               break
+             else:
+                  print("balance should be greater than zero!")
           except ValueError:
                print("please print balance in integers")              
         print("====Account created succesfully===")
@@ -159,14 +167,14 @@ def management():
                     while True:
                          try:
                             amount = int(input("Enter amount to withdraw: "))
-                            if amount > 0:
+                            if amount >0:
                                    break
                             else:
                               print("Amount must be greater than 0.")
                          except ValueError:
                              print("Please enter a valid amount.")
                     balance=i["Account Balance"]-amount
-                    if balance>0:
+                    if balance>=0:
                             i["Account Balance"]=balance
                             with open("bank.json","w") as file:
                                  json.dump(details,file,indent=4)
@@ -177,7 +185,7 @@ def management():
                          print("Insufficient Balance!")
                          return
                
-               print("Account not found!")
+         print("Account not found!")
     
     def Check():
          details=load()
@@ -197,7 +205,7 @@ def management():
                    print("Account Number:",i["Account Number"])
                    print("Current Balance:",i["Account Balance"])
                    return
-              else:
+         else:
                    print("no account found")
     def update():
          details=load()
@@ -249,9 +257,14 @@ def management():
                                  print("email not valid.")
                         i["Gmail"]=gmail
                         break
-         with open("bank.json","w") as file:
-               json.dump(details,file,indent=4)
-         return "Updated succesfully!"
+                   with open("bank.json","w") as file:
+                              json.dump(details,file,indent=4)
+                   return "Updated succesfully!"
+                             
+         else:
+           print("Accont not found!")
+           return
+         
     def delete():
          details=load()
          if len(details)==0:
@@ -267,7 +280,7 @@ def management():
          for j,i in enumerate(details,start=1):
                        if i["Account Number"]==account_number:
                         while True:
-                         confirm = input(f"Are you sure you want to delete account {account_number}? (yes/n0): ").lower()
+                         confirm = input(f"Are you sure you want to delete account {account_number}? (yes/no): ").lower()
                          if confirm =="yes" or confirm =="no":
                               break
                          else:
